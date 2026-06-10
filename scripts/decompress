@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+NC_FILENAME="$1"
+uvx modal volume create compression &> /dev/null
+uvx modal volume put compression $NC_FILENAME --force
+uvx modal run compression.py::decompress --file-name="$NC_FILENAME"
+uvx modal volume get compression "${NC_FILENAME%.nc}" --force
