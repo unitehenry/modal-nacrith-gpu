@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+if [ ! -f smollm2-135m-f32.gguf ]; then
+    echo "Error: File smollm2-135m-f32.gguf does not exist." >&2
+    exit 1
+fi
+
+# Clone the repository
+git clone https://github.com/st4ck/Nacrith-GPU.git
+
+cp smollm2-135m-f32.gguf Nacrith-GPU
+
+cd Nacrith-GPU
+
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate
+
+# Install dependencies
+pip install torch
+pip install transformers accelerate numpy
+
+CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --force-reinstall --no-cache-dir
