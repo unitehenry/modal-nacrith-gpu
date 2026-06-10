@@ -66,6 +66,7 @@ def decompress(file_name):
         ]
     )
 
+
 @app.function(image=image, volumes={"/data": vol})
 def batch(file_name):
     from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -76,7 +77,7 @@ def batch(file_name):
 
     input_file = f"/data/{file_name}"
 
-    with open(input_file, 'r', encoding='utf-8') as f:
+    with open(input_file, "r", encoding="utf-8") as f:
         text = f.read()
 
     text_splitter = RecursiveCharacterTextSplitter(
@@ -101,7 +102,7 @@ def batch(file_name):
 
         output_file = f"/data/{output_file_name}"
 
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(chunk)
 
         print(output_file_name)
