@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+uvx modal volume create compression &> /dev/null
+uvx modal volume put compression $1 --force
+uvx modal run -d compression.py::batch --file-name="$(basename $1)"

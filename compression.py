@@ -20,6 +20,7 @@ image = (
     .add_local_file("scripts/nacrith", "/scripts/nacrith", copy=True)
     .run_commands(["chmod +x /scripts/smollm2", "/scripts/smollm2"])
     .run_commands(["chmod +x /scripts/nacrith", "/scripts/nacrith"])
+    .pip_install("langchain-text-splitters")
 )
 
 
@@ -64,3 +65,45 @@ def decompress(file_name):
             f'python /Nacrith-GPU/cli.py decompress "/data/{file_name}" "/data/{outfile}"',
         ]
     )
+
+@app.function(image=image, volumes={"/data": vol})
+def batch(file_name):
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    import os
+    from pathlib import Path
+
+    num_chunks = 20
+
+    input_file = f"/data/{file_name}"
+
+    with open(input_file, 'r', encoding='utf-8') as f:
+        text = f.read()
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=max(500, len(text) // num_chunks),
+        chunk_overlap=200,
+        length_function=len,
+        separators=["\n\n", "\n", ". ", " ", ""],
+    )
+
+    chunks = text_splitter.split_text(text)
+
+    input_path = Path(input_file)
+
+    base_name = input_path.stem
+
+    ext = input_path.suffix or ".txt"
+
+    outputs = []
+
+    for i, chunk in enumerate(chunks, 1):
+        output_file_name = f"{base_name}_chunk_{i:03d}{ext}"
+
+        output_file = f"/data/{output_file_name}"
+
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write(chunk)
+
+        print(output_file_name)
+
+        compress.spawn(output_file_name)
