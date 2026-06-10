@@ -22,6 +22,7 @@ image = (
     .run_commands(["chmod +x /scripts/nacrith", "/scripts/nacrith"])
 )
 
+
 def run(commands):
     import subprocess
     import tempfile
@@ -42,18 +43,24 @@ def run(commands):
     finally:
         os.unlink(path)
 
-@app.function(gpu="H100", image=image, volumes={ "/data": vol })
-def compress(file_name):
-    run([
-        "source /Nacrith-GPU/venv/bin/activate",
-        f'python /Nacrith-GPU/cli.py compress "/data/{file_name}" "/data/{file_name}.nc"',
-    ])
 
-@app.function(gpu="H100", image=image, volumes={ "/data": vol })
+@app.function(gpu="H100", image=image, volumes={"/data": vol})
+def compress(file_name):
+    run(
+        [
+            "source /Nacrith-GPU/venv/bin/activate",
+            f'python /Nacrith-GPU/cli.py compress "/data/{file_name}" "/data/{file_name}.nc"',
+        ]
+    )
+
+
+@app.function(gpu="H100", image=image, volumes={"/data": vol})
 def decompress(file_name):
     outfile = "".join(file_name.rsplit(".nc", 1))
 
-    run([
-        "source /Nacrith-GPU/venv/bin/activate",
-        f'python /Nacrith-GPU/cli.py decompress "/data/{file_name}" "/data/{outfile}"',
-    ])
+    run(
+        [
+            "source /Nacrith-GPU/venv/bin/activate",
+            f'python /Nacrith-GPU/cli.py decompress "/data/{file_name}" "/data/{outfile}"',
+        ]
+    )
