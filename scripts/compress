@@ -2,5 +2,5 @@
 
 uvx modal volume create compression &> /dev/null
 uvx modal volume put compression $1 --force
-uvx modal run compression.py::compress --file-name="$1"
-uvx modal volume get compression "$1.nc" --force
+uvx modal run compression.py::compress --file-name="$(basename $1)"
+uvx modal volume get compression "$(basename $1).nc" --force
