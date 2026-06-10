@@ -20,4 +20,11 @@ source venv/bin/activate
 pip install torch
 pip install transformers accelerate numpy
 
-CMAKE_ARGS="-DGGML_CUDA=on" pip install llama-cpp-python --force-reinstall --no-cache-dir
+CMAKE_ARGS="-DGGML_CUDA=on"
+
+if [ "$MODAL" = "1" ]; then
+    # Build for H100
+    CMAKE_ARGS="$CMAKE_ARGS -DCMAKE_CUDA_ARCHITECTURES=90"
+fi
+
+CMAKE_ARGS="$CMAKE_ARGS" pip install llama-cpp-python --force-reinstall --no-cache-dir

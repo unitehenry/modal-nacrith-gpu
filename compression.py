@@ -14,7 +14,7 @@ image = (
             "apt-get -y install cuda-toolkit-12-8",
         ]
     )
-    .env({"PATH": "/usr/local/cuda/bin:$PATH"})
+    .env({"PATH": "/usr/local/cuda/bin:$PATH", "MODAL": "1"})
     .run_commands(["mkdir /scripts"])
     .add_local_file("scripts/smollm2", "/scripts/smollm2", copy=True)
     .add_local_file("scripts/nacrith", "/scripts/nacrith", copy=True)
@@ -42,14 +42,14 @@ def run(commands):
     finally:
         os.unlink(path)
 
-@app.function(gpu="A10", image=image, volumes={ "/data": vol })
+@app.function(gpu="H100", image=image, volumes={ "/data": vol })
 def compress(file_name):
     run([
         "source /Nacrith-GPU/venv/bin/activate",
         f'python /Nacrith-GPU/cli.py compress "/data/{file_name}" "/data/{file_name}.nc"',
     ])
 
-@app.function(gpu="A10", image=image, volumes={ "/data": vol })
+@app.function(gpu="H100", image=image, volumes={ "/data": vol })
 def decompress(file_name):
     outfile = "".join(file_name.rsplit(".nc", 1))
 
