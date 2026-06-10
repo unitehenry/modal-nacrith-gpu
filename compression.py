@@ -29,7 +29,7 @@ def run(commands):
 
     c = "\n".join(commands)
 
-    script = "\n".join(["#!/bin/bash", "set -e", "c"])
+    script = "\n".join(["#!/bin/bash", "set -e", c])
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".sh", delete=False) as f:
         f.write(script)
