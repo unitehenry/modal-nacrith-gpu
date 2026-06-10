@@ -51,9 +51,9 @@ def compress(file_name):
 
 @app.function(gpu="h100", image=image, volumes={ "/data": vol })
 def decompress(file_name):
-    outfile = "".join(file_path.rsplit(".nc", 1))
+    outfile = "".join(file_name.rsplit(".nc", 1))
 
     run([
         "source /Nacrith-GPU/venv/bin/activate",
-        f'python /Nacrith-GPU/cli.py decompress "/data/{file_name}.nc" "/data/{outfile}"',
+        f'python /Nacrith-GPU/cli.py decompress "/data/{file_name}" "/data/{outfile}"',
     ])
