@@ -30,7 +30,7 @@ This Modal app runs inference on an H100 which gets ~500-1000 tok/s. As a benchm
 
 ### Batch Compression
 
-There is a batch compression function that break text-based file contents into n-chunks and spawn a `compress` instance to perform compression on each chunk concurrently.
+There is a batch compression function that break text-based file contents into n-chunks and spawn a `compress` instance to perform compression on each chunk concurrently. The 5MB log file used to benchmark goes from an hour to ~5 minutes to compress.
 
 ```bash
 scripts/batch path/to/file.txt
