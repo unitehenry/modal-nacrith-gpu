@@ -45,7 +45,7 @@ def run(commands):
         os.unlink(path)
 
 
-@app.function(gpu="H100", image=image, volumes={"/data": vol}, timout=600)
+@app.function(gpu="H100", image=image, volumes={"/data": vol}, timeout=600)
 def compress(file_name):
     run(
         [
