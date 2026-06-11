@@ -1,5 +1,5 @@
 
-Nacrith-GPU compression system running on Modal serverless.
+[Nacrith-GPU](https://github.com/robtacconelli/Nacrith-GPU) compression system running on Modal serverless.
 
 ## Getting Started
 
