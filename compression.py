@@ -68,12 +68,10 @@ def decompress(file_name):
 
 
 @app.function(image=image, volumes={"/data": vol})
-def batch(file_name):
+def batch(file_name : str, chunks : int = 20):
     from langchain_text_splitters import RecursiveCharacterTextSplitter
     import os
     from pathlib import Path
-
-    num_chunks = 20
 
     input_file = f"/data/{file_name}"
 
@@ -81,13 +79,13 @@ def batch(file_name):
         text = f.read()
 
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=max(500, len(text) // num_chunks),
+        chunk_size=max(500, len(text) // chunks),
         chunk_overlap=200,
         length_function=len,
         separators=["\n\n", "\n", ". ", " ", ""],
     )
 
-    chunks = text_splitter.split_text(text)
+    text_chunks = text_splitter.split_text(text)
 
     input_path = Path(input_file)
 
@@ -97,7 +95,7 @@ def batch(file_name):
 
     outputs = []
 
-    for i, chunk in enumerate(chunks, 1):
+    for i, chunk in enumerate(text_chunks, 1):
         output_file_name = f"{base_name}_chunk_{i:03d}{ext}"
 
         output_file = f"/data/{output_file_name}"
@@ -105,6 +103,9 @@ def batch(file_name):
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(chunk)
 
-        print(output_file_name)
+        outputs.append(output_file_name)
 
+    vol.commit()
+
+    for output_file_name in outputs:
         compress.spawn(output_file_name)
