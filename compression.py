@@ -45,7 +45,7 @@ def run(commands):
         os.unlink(path)
 
 
-@app.function(gpu="H100", image=image, volumes={"/data": vol})
+@app.function(gpu="H100", image=image, volumes={"/data": vol}, timout=600)
 def compress(file_name):
     run(
         [
@@ -55,7 +55,7 @@ def compress(file_name):
     )
 
 
-@app.function(gpu="H100", image=image, volumes={"/data": vol})
+@app.function(gpu="H100", image=image, volumes={"/data": vol}, timeout=600)
 def decompress(file_name):
     outfile = "".join(file_name.rsplit(".nc", 1))
 
