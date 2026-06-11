@@ -68,7 +68,7 @@ def decompress(file_name):
 
 
 @app.function(image=image, volumes={"/data": vol})
-def batch(file_name : str, chunks : int = 20):
+def batch(file_name: str, chunks: int = 20):
     from langchain_text_splitters import RecursiveCharacterTextSplitter
     import os
     from pathlib import Path
