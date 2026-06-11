@@ -28,6 +28,4 @@ There is a batch compression function that break text-based file contents into n
 scripts/batch path/to/file.txt
 ```
 
-## References
-
 [^1]: [Nacrith: Neural Lossless Compression via Ensemble Context Modeling and High-Precision CDF Coding](https://arxiv.org/abs/2602.19626)
