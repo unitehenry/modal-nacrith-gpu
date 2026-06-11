@@ -30,4 +30,4 @@ scripts/batch path/to/file.txt
 
 ## References
 
-[^1] [Nacrith: Neural Lossless Compression via Ensemble Context Modeling and High-Precision CDF Coding](https://arxiv.org/abs/2602.19626)
+[^1]: [Nacrith: Neural Lossless Compression via Ensemble Context Modeling and High-Precision CDF Coding](https://arxiv.org/abs/2602.19626)
